@@ -4,7 +4,7 @@ from uvicorn import run
 
 
 app = FastAPI(
-    title="Testing-Practice",
+    title="Translator-ULTRA",
     default_response_class=ORJSONResponse,
 )
 
