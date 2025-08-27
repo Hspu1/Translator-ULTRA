@@ -6,11 +6,18 @@ authors = [
     {name = "Макс",email = "rumyantsev1m0s1@gmail.com"}
 ]
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.12, <4.0"
 dependencies = [
     "fastapi (>=0.116.1,<0.117.0)",
     "uvicorn (>=0.35.0,<0.36.0)",
-    "orjson (>=3.11.3,<4.0.0)"
+    "orjson (>=3.11.3,<4.0.0)",
+    "redis[async] (>=6.4.0,<7.0.0)",
+    "taskiq (>=0.11.18,<0.12.0)",
+    "taskiq-redis (>=1.1.0,<2.0.0)",
+    "sqlalchemy[async] (>=2.0.43,<3.0.0)",
+    "dotenv (>=0.9.9,<0.10.0)",
+    "alembic (>=1.16.4,<2.0.0)",
+    "asyncpg (>=0.30.0,<0.31.0)"
 ]
 
 
