@@ -10,7 +10,7 @@ from .config import Base
 class UserModel(Base):
     __tablename__ = "users"
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
+    id = Column(Integer, primary_key=True, autoincrement=True, index=True)
     bp_translations = relationship(
         "TranslationModel",  # связь с другой таблицей
         back_populates="bp_user",  # двусторонняя связь

@@ -2,11 +2,14 @@ from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse
 from uvicorn import run
 
+from app.api import generate_user_id_router
+
 
 app = FastAPI(
     title="Translator-ULTRA",
     default_response_class=ORJSONResponse,
 )
+app.include_router(generate_user_id_router)
 
 
 if __name__ == '__main__':
