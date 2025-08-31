@@ -1,4 +1,4 @@
-from .factories import create_redis_cache, create_broker
+from .cache_queue_config import create_redis_cache, create_broker
 from .db import (
     async_session_maker, Base, db_url,
     UserModel, TranslationModel

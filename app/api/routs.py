@@ -24,7 +24,7 @@ async def generate_user_id():
 async def translater(
         input_data: Annotated[TranslatedRequest, Depends()], request: Request
 ):
-    redis = request.app.state.redis  # берём redis клиент из lifespan
+    redis = request.app.state.redis
     key = (
         f"translate:{input_data.user_id}:"
         f"{input_data.original_text}"
@@ -55,7 +55,6 @@ async def translater(
                     session.add(translated_data)
 
         except IntegrityError as e:
-            # при написании таблиц был добавлен уникальный констрейнт
             logger.warning(f"IntegrityError при сохранении перевода: {e}")
 
     return {

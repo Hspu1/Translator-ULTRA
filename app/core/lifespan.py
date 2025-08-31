@@ -13,8 +13,8 @@ async def lifespan(app: FastAPI):
     if not broker.is_worker_process:
         await broker.startup()
 
-    await redis_cache.ping()
     app.state.redis_cache = redis_cache
+    app.state.broker = broker
 
     yield
 
