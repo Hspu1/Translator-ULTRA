@@ -25,8 +25,8 @@ class TranslationModel(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
-    original_word = Column(String(25), nullable=False, index=True)
-    translated_word = Column(String(25), nullable=False, index=True)
+    original_word = Column(String(50), nullable=False, index=True)
+    translated_word = Column(String(50), nullable=False, index=True)
     bp_user = relationship("UserModel", back_populates="bp_translations")
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 

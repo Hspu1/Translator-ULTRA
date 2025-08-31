@@ -48,7 +48,7 @@ async def translater(
         user_id=input_data.user_id, original_word=input_data.original_text,
         translated_word=translated
     )
-    if len(input_data.original_text) <= 25:
+    if len(input_data.original_text) <= 35:
         try:
             async with async_session_maker() as session:
                 async with session.begin():
