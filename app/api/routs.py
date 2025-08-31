@@ -17,6 +17,6 @@ async def generate_user_id():
             result = await session.execute(stmt)
             user_id = result.scalar_one()
 
-            return {
-                "user_id": user_id
-            }
+        return {
+            "user_id": user_id
+        }
