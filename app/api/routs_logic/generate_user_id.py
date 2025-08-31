@@ -4,7 +4,7 @@ from app import UserModel
 from app.infrastructure import async_session_maker
 
 
-async def generate_user_id_code() -> dict[str, int]:
+async def generate_user_id_logic() -> dict[str, int]:
     async with async_session_maker() as session:
         async with session.begin():
             stmt = insert(UserModel).returning(UserModel.id)

@@ -1,63 +1,23 @@
 from typing import Annotated
 
-from deep_translator import GoogleTranslator
 from fastapi import APIRouter, Depends, Request
-from sqlalchemy.exc import IntegrityError
 
-from .routs_code import generate_user_id_code
+from .routs_logic import generate_user_id_logic, translator_logic
 from .schemas import TranslatedRequest
-from app import TranslationModel
-from app.infrastructure import async_session_maker
-from app.utils import logger
 
 generate_user_id_router = APIRouter()
-translater_router = APIRouter()
+translator_router = APIRouter()
 
 
 @generate_user_id_router.post(path="/generate_user_id", status_code=201)
-async def generate_user_id():
-    response: dict[str, int] = await generate_user_id_code()
+async def generate_user_id() -> dict[str, int]:
+    response = await generate_user_id_logic()
     return response
 
 
-@translater_router.post(path="/translater", status_code=201)
-async def translater(
+@translator_router.post(path="/translator", status_code=201)
+async def translator(
         input_data: Annotated[TranslatedRequest, Depends()], request: Request
-):
-    redis_cache = request.app.state.redis_cache
-    key = (
-        f"translate:{input_data.user_id}:"
-        f"{input_data.original_text}"
-    )
-
-    cached_data = await redis_cache.get(key)
-    if cached_data is not None:
-        return {
-            "translated_text": cached_data,
-            "cached": True
-        }
-
-    translated = (
-        GoogleTranslator(source='auto', target="ru").translate(
-            input_data.original_text)
-    )
-
-    await redis_cache.set(key, translated, ex=86400)
-
-    translated_data = TranslationModel(
-        user_id=input_data.user_id, original_word=input_data.original_text,
-        translated_word=translated
-    )
-    if len(input_data.original_text) <= 35:
-        try:
-            async with async_session_maker() as session:
-                async with session.begin():
-                    session.add(translated_data)
-
-        except IntegrityError as e:
-            logger.warning(f"IntegrityError при сохранении перевода: {e}")
-
-    return {
-        "translated_text": translated,
-        "cached": False
-    }
+) -> dict[str, str | bool]:
+    response = await translator_logic(request=request, data=input_data)
+    return response
