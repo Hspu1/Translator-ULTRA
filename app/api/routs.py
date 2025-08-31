@@ -24,13 +24,13 @@ async def generate_user_id():
 async def translater(
         input_data: Annotated[TranslatedRequest, Depends()], request: Request
 ):
-    redis = request.app.state.redis
+    redis_cache = request.app.state.redis_cache
     key = (
         f"translate:{input_data.user_id}:"
         f"{input_data.original_text}"
     )
 
-    cached_data = await redis.get(key)
+    cached_data = await redis_cache.get(key)
     if cached_data is not None:
         return {
             "translated_text": cached_data,
@@ -42,7 +42,7 @@ async def translater(
             input_data.original_text)
     )
 
-    await redis.set(key, translated, ex=86400)
+    await redis_cache.set(key, translated, ex=86400)
 
     translated_data = TranslationModel(
         user_id=input_data.user_id, original_word=input_data.original_text,

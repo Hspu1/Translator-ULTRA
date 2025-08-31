@@ -13,8 +13,8 @@ class RedisCache(AbstractCache):
     async def get(self, key: str) -> str | None:
         return await self._redis.get(key)
 
-    async def set(self, key: str, value: Any, expire: int) -> None:
-        await self._redis.set(key, value, ex=expire)
+    async def set(self, key: str, value: Any, ex: int) -> None:
+        await self._redis.set(key, value, ex=ex)
 
     async def aclose(self) -> None:
         await self._redis.aclose()
