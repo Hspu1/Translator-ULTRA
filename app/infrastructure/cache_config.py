@@ -1,9 +1,8 @@
 from typing import Any
 
 from redis.asyncio import Redis
-from taskiq_redis import RedisStreamBroker, RedisAsyncResultBackend
 
-from .abstract import AbstractCache
+from app.core import AbstractCache
 
 
 class RedisCache(AbstractCache):
@@ -28,12 +27,3 @@ async def create_redis_cache() -> RedisCache:
     redis_cache = RedisCache(redis_client)
 
     return redis_cache
-
-
-async def create_broker() -> RedisStreamBroker:
-    backend = RedisAsyncResultBackend(redis_url="redis://localhost:6379/0")
-    broker = RedisStreamBroker(
-        url="redis://localhost:6379/1"
-    ).with_result_backend(result_backend=backend)
-
-    return broker
