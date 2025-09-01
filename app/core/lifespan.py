@@ -3,7 +3,9 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from redis import ConnectionError, ResponseError, RedisError
 
-from app.infrastructure import create_redis_cache, create_redis_broker
+from app.infrastructure.factories import (
+    create_redis_cache, create_redis_broker
+)
 from app.utils import logger
 
 

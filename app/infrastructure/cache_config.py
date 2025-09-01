@@ -1,7 +1,7 @@
 from redis import RedisError, ResponseError
 from redis.asyncio import Redis
 
-from app.core import AbstractCache
+from app.core.abstract import AbstractCache
 from app.utils import logger
 
 
