@@ -24,7 +24,11 @@ class TranslationModel(Base):
     __tablename__ = "translations"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    user_id = Column(
+        Integer, ForeignKey("users.id", ondelete="CASCADE"),
+        nullable=False
+    )  # ondelete="CASCADE" - удаление не только тех данных, которые мы указали,
+    # но и всех остальных, которые имеют связь с указанными
     original_word = Column(String(50), nullable=False, index=True)
     translated_word = Column(String(50), nullable=False, index=True)
     bp_user = relationship("UserModel", back_populates="bp_translations")
