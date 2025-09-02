@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends, Request, Query
 from .routs_logic import (
     generate_user_id_logic, translator_logic, show_history_logic
 )
-from .schemas import TranslatedRequest
+from .schemas import TranslatedRequest, TranslationHistory
 
 generate_user_id_router = APIRouter()
 translator_router = APIRouter()
@@ -27,6 +27,6 @@ async def translator(
 
 
 @show_history_router.get(path="/show_history", status_code=200)
-async def show_history(user_id: Annotated[int, Query(ge=1)]):
+async def show_history(user_id: Annotated[int, Query(ge=1)]) -> dict[str, list[TranslationHistory]]:
     response = await show_history_logic(user_id=user_id)
     return response

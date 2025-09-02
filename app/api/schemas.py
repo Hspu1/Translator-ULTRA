@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Annotated
 
 from pydantic import BaseModel, Field, BeforeValidator
@@ -13,3 +14,11 @@ class TranslatedRequest(BaseModel):
         str, Field(min_length=1, max_length=500),
         BeforeValidator(strip_whitespace)
     ]
+
+
+class TranslationHistory(BaseModel):
+    user_id: int
+    id: int
+    translated_word: str
+    original_word: str
+    created_at: datetime
