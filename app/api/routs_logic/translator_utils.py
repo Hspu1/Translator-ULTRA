@@ -4,7 +4,7 @@ from app.api.schemas import TranslatedRequest
 from app import TranslationModel
 
 
-def translated(data: TranslatedRequest):
+def translated(data: TranslatedRequest) -> str:
     translated_data = (
         GoogleTranslator(source='auto', target="ru"
         ).translate(data.original_text)
