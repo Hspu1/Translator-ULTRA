@@ -1,11 +1,12 @@
 from typing import Annotated
 
 from fastapi import (
-    APIRouter, Depends, Query, BackgroundTasks
+    APIRouter, Depends, Query,
+    BackgroundTasks, Request
 )
 
 from .routs_logic import (
-    generate_user_id_logic, translated, show_history_logic
+    generate_user_id_logic, show_history_logic, translator_logic
 )
 from .schemas import TranslatedRequest, TranslationHistory
 from .tasks import create_save_history_task
@@ -25,14 +26,12 @@ async def generate_user_id() -> dict[str, int]:
 @translator_router.post(path="/translator", status_code=201)
 async def translator(
         input_data: Annotated[TranslatedRequest, Depends()],
-        background_tasks: BackgroundTasks
-) -> dict[str, str]:
+        background_tasks: BackgroundTasks, request: Request
+):
     background_tasks.add_task(create_save_history_task, input_data)
 
-    response = translated(data=input_data)
-    return {
-        "translated": response
-    }
+    response = await translator_logic(data=input_data, request=request)
+    return response
 
 
 @show_history_router.get(path="/show_history", status_code=200)

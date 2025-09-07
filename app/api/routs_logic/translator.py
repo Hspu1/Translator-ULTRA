@@ -4,7 +4,7 @@ from .translator_utils import translated, save_translated
 from app.api.schemas import TranslatedRequest
 
 
-async def translator_logic(request: Request, data: TranslatedRequest):
+async def translator_logic(data: TranslatedRequest, request: Request):
     translated_obj, save_translated_obj = (
         translated(data=data), save_translated(data=data)
     )
