@@ -1,3 +1,4 @@
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
@@ -20,6 +21,7 @@ wheels/
 *.egg
 MANIFEST
 
+# environment
 .env
 .venv
 env/
@@ -28,19 +30,24 @@ ENV/
 env.bak/
 venv.bak/
 
+# PostgreSQL
 postgres_data/
 
+# Redis
 dump.rdb
 
+# logs
 *.log
 logs/
 *.logs
 
+# tests
 .coverage
 .coverage.*
 htmlcov/
 .coverage
 .pytest_cache/
 
+# IDE
 .idea/
 *.iml
