@@ -11,7 +11,7 @@ def strip_whitespace(v):
 class TranslatedRequest(BaseModel):
     user_id: int
     original_text: Annotated[
-        str, Field(min_length=1, max_length=500),
+        str, Field(min_length=1, max_length=5000),
         BeforeValidator(strip_whitespace)
     ]
 
