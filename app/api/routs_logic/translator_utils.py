@@ -13,7 +13,7 @@ def translated(data: TranslatedRequest) -> str:
     return translated_data
 
 
-def save_translated(data: TranslatedRequest):
+def save_translated(data: TranslatedRequest) -> TranslationModel:
     translated_data = translated(data=data)
 
     save_translated_data = TranslationModel(

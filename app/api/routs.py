@@ -27,7 +27,7 @@ async def generate_user_id() -> dict[str, int]:
 async def translator(
         input_data: Annotated[TranslatedRequest, Depends()],
         background_tasks: BackgroundTasks, request: Request
-):
+) -> dict[str, str | bool]:
     background_tasks.add_task(create_save_history_task, input_data)
 
     response = await translator_logic(data=input_data, request=request)
