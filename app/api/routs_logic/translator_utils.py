@@ -1,4 +1,4 @@
-from asyncio import get_event_loop
+from asyncio import to_thread
 
 from deep_translator import GoogleTranslator
 
@@ -7,13 +7,10 @@ from app import TranslationModel
 
 
 async def translated_async(data: TranslatedRequest) -> str:
-    loop = get_event_loop()
+    translator = GoogleTranslator(source='auto', target="ru")
+    translated_text = await to_thread(translator.translate, data.original_text)
 
-    return await loop.run_in_executor(
-        None,
-        lambda: GoogleTranslator(
-            source='auto', target="ru").translate(data.original_text)
-    )
+    return translated_text
 
 
 async def save_translated(data: TranslatedRequest) -> TranslationModel:
