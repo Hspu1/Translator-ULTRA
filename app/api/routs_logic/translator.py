@@ -1,15 +1,12 @@
 from fastapi import Request
 
-from .translator_utils import translated_async, save_translated
+from .translator_utils import translated_async
 from app.api.schemas import TranslatedRequest
 
 
 async def translator_logic(
         data: TranslatedRequest, request: Request) -> dict[str, str | bool]:
-
-    translated_obj, save_translated_obj = (
-        await translated_async(data=data), await save_translated(data=data)
-    )
+    translated_obj = await translated_async(data=data)
 
     redis_cache = request.app.state.redis_cache
     key = (
