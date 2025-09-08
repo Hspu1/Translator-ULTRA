@@ -17,7 +17,7 @@ from app.utils import logger
     priority=0
 )
 async def save_history(data: TranslatedRequest):
-    save_translated_obj = save_translated(data=data)
+    save_translated_obj = await save_translated(data=data)
 
     if len(data.original_text) <= 35:
         try:
