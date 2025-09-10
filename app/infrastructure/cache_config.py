@@ -35,3 +35,10 @@ class RedisCache(AbstractCache):
 
     async def aclose(self) -> None:
         await self._redis.aclose()
+
+
+redis_client = Redis(
+    host="127.0.0.1", port=6379,
+    decode_responses=True, db=2
+)
+redis_cache = RedisCache(redis_client)
