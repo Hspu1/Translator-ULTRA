@@ -8,14 +8,25 @@ from app.api import (
 from app.core import lifespan
 
 
-app = FastAPI(
-    title="Translator-ULTRA",
-    default_response_class=ORJSONResponse,
-    lifespan=lifespan
-)
-app.include_router(generate_user_id_router)
-app.include_router(translator_router)
-app.include_router(show_history_router)
+def create_app(testing: bool = False) -> FastAPI:
+    """Фабрика для создания приложения"""
+    app = FastAPI(
+        title="Translator-ULTRA",
+        default_response_class=ORJSONResponse,
+        lifespan=lifespan
+    )
+
+    if testing:
+        app.state.testing = True
+
+    app.include_router(generate_user_id_router)
+    app.include_router(translator_router)
+    app.include_router(show_history_router)
+
+    return app
+
+
+app = create_app()
 
 
 if __name__ == '__main__':
