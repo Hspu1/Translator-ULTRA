@@ -1,5 +1,6 @@
 from pytest_asyncio import fixture
 from httpx import AsyncClient, ASGITransport
+from taskiq import InMemoryBroker
 
 
 @fixture(loop_scope="function")
@@ -17,3 +18,17 @@ async def async_client(app_instance):
             base_url="http://test"
     ) as client:
         yield client
+
+
+@fixture
+def anyio_backend():
+    return 'asyncio'
+
+
+@fixture
+async def broker_backend():
+    test_broker = InMemoryBroker()
+    await test_broker.startup()
+    yield test_broker
+
+    await test_broker.shutdown()
