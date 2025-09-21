@@ -25,7 +25,7 @@ def anyio_backend():
     return 'asyncio'
 
 
-@fixture
+@fixture(loop_scope="function")
 async def broker_backend():
     test_broker = InMemoryBroker()
     await test_broker.startup()
