@@ -22,11 +22,13 @@ async def async_client(app_instance):
 
 @fixture
 def anyio_backend():
+    """Использование anyio для запуска корутин в pytest"""
     return 'asyncio'
 
 
 @fixture(loop_scope="function")
 async def broker_backend():
+    """Мок брокер бэкэнда"""
     test_broker = InMemoryBroker()
     await test_broker.startup()
     yield test_broker
