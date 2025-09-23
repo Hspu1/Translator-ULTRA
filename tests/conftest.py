@@ -1,16 +1,16 @@
-from pytest_asyncio import fixture
+from pytest import fixture
 from httpx import AsyncClient, ASGITransport
 from taskiq import InMemoryBroker
 
 
-@fixture(loop_scope="function")
+@fixture(scope="function")
 def app_instance():
     """Создание нового приложения для каждого теста"""
     from app.main import create_app
     return create_app(testing=True)
 
 
-@fixture(loop_scope="function")
+@fixture(scope="function")
 async def async_client(app_instance):
     """Mок HTTP клиента"""
     async with AsyncClient(
@@ -26,7 +26,7 @@ def anyio_backend():
     return 'asyncio'
 
 
-@fixture(loop_scope="function")
+@fixture(scope="function")
 async def broker_backend():
     """Мок брокер бэкэнда"""
     test_broker = InMemoryBroker()
