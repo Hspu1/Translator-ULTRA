@@ -1,17 +1,20 @@
+from typing import AsyncGenerator
+
+from fastapi import FastAPI
 from pytest import fixture
 from httpx import AsyncClient, ASGITransport
 from taskiq import InMemoryBroker
 
 
 @fixture(scope="function")
-def app_instance():
+def app_instance() -> FastAPI:
     """Создание нового приложения для каждого теста"""
     from app.main import create_app
     return create_app(testing=True)
 
 
 @fixture(scope="function")
-async def async_client(app_instance):
+async def async_client(app_instance) -> AsyncGenerator[AsyncClient, None]:
     """Mок HTTP клиента"""
     async with AsyncClient(
             transport=ASGITransport(app=app_instance),
@@ -21,13 +24,13 @@ async def async_client(app_instance):
 
 
 @fixture
-def anyio_backend():
+def anyio_backend() -> str:
     """Использование anyio для запуска корутин в pytest"""
     return 'asyncio'
 
 
 @fixture(scope="function")
-async def broker_backend():
+async def broker_backend() -> AsyncGenerator[InMemoryBroker, None]:
     """Мок брокер бэкэнда"""
     test_broker = InMemoryBroker()
     await test_broker.startup()
