@@ -1,8 +1,6 @@
-from redis import RedisError, ResponseError
 from redis.asyncio import Redis
 
 from app.core.abstract import AbstractCache
-from app.utils import logger
 
 
 class RedisCache(AbstractCache):
@@ -15,23 +13,11 @@ class RedisCache(AbstractCache):
 
     async def get(self, key: str) -> str | None:
         safe_key = self._get_safe_key(not_safe_key=key)
-        try:
-            return await self._redis.get(safe_key)
-        except ResponseError as e:
-            logger.error(f"Redis GET response error for key {safe_key}: {e}")
-            return None
-        except RedisError as e:
-            logger.error(f"Redis GET error for key {safe_key}: {e}")
-            return None
+        return await self._redis.get(safe_key)
 
     async def set(self, key: str, value: str, ex: int) -> None:
         safe_key = self._get_safe_key(not_safe_key=key)
-        try:
-            await self._redis.set(safe_key, value, ex=ex)
-        except ResponseError as e:
-            logger.error(f"Redis SET response error for key {safe_key}: {e}")
-        except RedisError as e:
-            logger.error(f"Redis SET error for key {safe_key}: {e}")
+        await self._redis.set(safe_key, value, ex=ex)
 
     async def aclose(self) -> None:
         await self._redis.aclose()
