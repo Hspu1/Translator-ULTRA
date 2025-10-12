@@ -3,6 +3,7 @@ from typing import AsyncGenerator
 from fastapi import FastAPI
 from pytest_asyncio import fixture
 from httpx import AsyncClient, ASGITransport
+from redis.asyncio import Redis
 from taskiq import InMemoryBroker
 
 
@@ -37,3 +38,13 @@ async def broker_backend() -> AsyncGenerator[InMemoryBroker, None]:
     yield test_broker
 
     await test_broker.shutdown()
+
+
+@fixture(scope="function")
+async def redis_client():
+    """Мок редис клиента"""
+    client = Redis(host="localhost", port=6379, decode_responses=True, db=3)
+
+    async with client:
+        yield client
+        await client.flushdb()
