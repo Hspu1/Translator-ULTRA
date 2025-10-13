@@ -42,7 +42,7 @@ async def broker_backend() -> AsyncGenerator[InMemoryBroker, None]:
 
 @fixture(scope="function")
 async def redis_client():
-    """Мок редис клиента"""
+    """Тестовый редис клиент"""
     client = Redis(host="localhost", port=6379, decode_responses=True, db=3)
 
     async with client:
