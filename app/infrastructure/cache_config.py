@@ -1,9 +1,7 @@
 from redis.asyncio import Redis
 
-from app.core.abstract import AbstractCache
 
-
-class RedisCache(AbstractCache):
+class RedisCache:
     def __init__(self, redis_client: Redis, namespace: str = "translator"):
         self._redis = redis_client
         self._namespace = namespace
