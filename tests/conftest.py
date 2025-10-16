@@ -1,4 +1,5 @@
 from typing import AsyncGenerator
+from unittest.mock import AsyncMock
 
 from fastapi import FastAPI
 from pytest_asyncio import fixture
@@ -58,3 +59,11 @@ async def fake_redis():
     redis = FakeAsyncRedis(decode_responses=True)
     yield redis
     await redis.flushall()
+
+
+@fixture(scope="function")
+def mock_redis_request(fake_redis):
+    """Мок запроса в редис"""
+    mock_request = AsyncMock()
+    mock_request.app.state.redis_cache = fake_redis
+    return mock_request
