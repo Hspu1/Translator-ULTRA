@@ -55,6 +55,6 @@ async def redis_client():
 @fixture(scope="function")
 async def fake_redis():
     """Фейковый редис клиент (модульное тестирование)"""
-    redis = FakeAsyncRedis()
+    redis = FakeAsyncRedis(decode_responses=True)
     yield redis
     await redis.flushall()
