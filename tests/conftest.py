@@ -5,6 +5,7 @@ from pytest_asyncio import fixture
 from httpx import AsyncClient, ASGITransport
 from redis.asyncio import Redis
 from taskiq import InMemoryBroker
+from fakeredis import FakeAsyncRedis
 
 
 @fixture(loop_scope="function")
@@ -26,7 +27,8 @@ async def async_client(app_instance) -> AsyncGenerator[AsyncClient, None]:
 
 @fixture
 def anyio_backend() -> str:
-    """Использование anyio для запуска корутин в pytest"""
+    """Использование anyio для запуска
+    корутин в pytest (рекомендация в доке)"""
     return 'asyncio'
 
 
@@ -42,9 +44,17 @@ async def broker_backend() -> AsyncGenerator[InMemoryBroker, None]:
 
 @fixture(scope="function")
 async def redis_client():
-    """Тестовый редис клиент"""
+    """Тестовый редис клиент (базовая проверка интеграции)"""
     client = Redis(host="localhost", port=6379, decode_responses=True, db=3)
 
     async with client:
         yield client
         await client.flushdb()
+
+
+@fixture(scope="function")
+async def fake_redis():
+    """Фейковый редис клиент (модульное тестирование)"""
+    redis = FakeAsyncRedis()
+    yield redis
+    await redis.flushall()
