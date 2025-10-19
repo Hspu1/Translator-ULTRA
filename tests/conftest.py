@@ -36,7 +36,7 @@ def anyio_backend() -> str:
 @fixture(loop_scope="function")
 async def broker_backend() -> AsyncGenerator[InMemoryBroker, None]:
     """Мок брокер бэкэнда"""
-    test_broker = InMemoryBroker()
+    test_broker = InMemoryBroker(await_inplace=True)
     await test_broker.startup()
     yield test_broker
 
