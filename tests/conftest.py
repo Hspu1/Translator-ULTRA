@@ -76,10 +76,3 @@ def mock_db_session():
     # Пустышка с асинк входом и выходом ->
 
     return session
-
-
-@fixture(scope="function")
-def mock_async_session_maker(mock_db_session):
-    """Мок async_session_maker"""
-    mock = AsyncMock(return_value=mock_db_session)
-    return mock
