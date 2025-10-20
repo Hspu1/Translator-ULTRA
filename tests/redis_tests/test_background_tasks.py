@@ -1,6 +1,7 @@
 from unittest.mock import patch, AsyncMock
 
 import pytest
+from sqlalchemy.exc import IntegrityError
 
 from app import TranslationModel
 from app.api.schemas import TranslatedRequest
@@ -30,3 +31,17 @@ async def test_create_save_history_task_calls_broker():
         await create_save_history_task(data)
         mock_kiq.assert_called_once_with(data=data)
         # Проверка - создание задачи через kiq ровно один раз
+
+
+@pytest.mark.anyio
+async def test_save_history_util_integrity_error(mock_db_session):
+    """Текста не важны - специально передаем IntegrityError в save_history_util
+    не смотря ни на что -> хотим проверить результат после выброса иселючения"""
+    data = TranslatedRequest(user_id=123, original_text=".", translated_text="")
+    obj = TranslationModel(user_id=123, original_word=".", translated_word="")
+
+    mock_db_session.add.side_effect = IntegrityError("Duplicate entry", {}, BaseException())
+
+    result = await save_history_util(mock_db_session, data, obj)
+    assert result is False
+    mock_db_session.begin.assert_called_once()
