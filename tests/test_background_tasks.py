@@ -8,7 +8,7 @@ from app.api.tasks import save_history_util, create_save_history_task
 
 
 @pytest.mark.parametrize("original_text, should_save", [
-    ("xd"*30, False), ("damn"*15, False), ("lmfao", True), ("cooked"*5, True)
+    ("x", True), ("x"*34, True), ("x"*35, True), ("x"*36, False), ("x"*100, False)
 ])
 @pytest.mark.anyio
 async def test_length_validation(mock_db_session, original_text, should_save):
