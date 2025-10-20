@@ -19,6 +19,8 @@ async def save_history_util(session, data: TranslatedRequest, obj: TranslationMo
             logger.warning(f"IntegrityError при сохранении перевода: {e}")
             return False
 
+    return False
+
 
 @broker.task(
     task_name="save_translation_history",

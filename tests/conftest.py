@@ -1,5 +1,5 @@
 from typing import AsyncGenerator
-from unittest.mock import AsyncMock
+from unittest.mock import AsyncMock, MagicMock
 
 from fastapi import FastAPI
 from pytest_asyncio import fixture
@@ -70,9 +70,11 @@ def mock_redis_request(fake_redis):
 @fixture(scope="function")
 def mock_db_session():
     """Мок асинхронной сессии БД"""
-    session = AsyncMock()
-    session.begin = AsyncMock(return_value=AsyncMock())
-    # Контекстный менеджер async with session.begin()
+    session = MagicMock()
+    session.begin.return_value.__aenter__ = AsyncMock(return_value=None)
+    session.begin.return_value.__aexit__ = AsyncMock(return_value=None)
+    # Пустышка с асинк входом и выходом ->
+
     return session
 
 
