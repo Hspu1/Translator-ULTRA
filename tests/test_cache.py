@@ -11,7 +11,6 @@ from app.api.schemas import TranslatedRequest
 ])
 @pytest.mark.anyio
 async def test_cache1(fake_redis, mock_redis_request, user_id, original, expected):
-
     fake_key = f"translate:{user_id}:{original}"
     await fake_redis.set(fake_key, expected)
 

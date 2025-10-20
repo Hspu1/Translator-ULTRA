@@ -17,7 +17,7 @@ def app_instance() -> FastAPI:
 
 
 @fixture(loop_scope="function")
-async def async_client(app_instance) -> AsyncGenerator[AsyncClient, None]:
+async def mock_async_client(app_instance) -> AsyncGenerator[AsyncClient, None]:
     """Mок HTTP клиента"""
     async with AsyncClient(
             transport=ASGITransport(app=app_instance),
@@ -34,12 +34,11 @@ def anyio_backend() -> str:
 
 
 @fixture(loop_scope="function")
-async def broker_backend() -> AsyncGenerator[InMemoryBroker, None]:
+async def mock_broker_backend() -> AsyncGenerator[InMemoryBroker, None]:
     """Мок брокер бэкэнда"""
     test_broker = InMemoryBroker(await_inplace=True)
     await test_broker.startup()
     yield test_broker
-
     await test_broker.shutdown()
 
 
@@ -47,7 +46,6 @@ async def broker_backend() -> AsyncGenerator[InMemoryBroker, None]:
 async def redis_client():
     """Тестовый редис клиент (базовая проверка интеграции)"""
     client = Redis(host="localhost", port=6379, decode_responses=True, db=3)
-
     async with client:
         yield client
         await client.flushdb()
@@ -67,3 +65,19 @@ def mock_redis_request(fake_redis):
     mock_request = AsyncMock()
     mock_request.app.state.redis_cache = fake_redis
     return mock_request
+
+
+@fixture(scope="function")
+def mock_db_session():
+    """Мок асинхронной сессии БД"""
+    session = AsyncMock()
+    session.begin = AsyncMock(return_value=AsyncMock())
+    # Контекстный менеджер async with session.begin()
+    return session
+
+
+@fixture(scope="function")
+def mock_async_session_maker(mock_db_session):
+    """Мок async_session_maker"""
+    mock = AsyncMock(return_value=mock_db_session)
+    return mock
