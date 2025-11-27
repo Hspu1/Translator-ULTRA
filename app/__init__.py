@@ -1,4 +1,4 @@
-from .infrastructure import Base, db_url, UserModel, TranslationModel
+from app.core.infrastructure import Base, db_url, UserModel, TranslationModel
 
 
 __all__ = (

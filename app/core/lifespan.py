@@ -1,15 +1,16 @@
 from contextlib import asynccontextmanager
+from typing import AsyncGenerator
 
 from fastapi import FastAPI
 from redis import ConnectionError, ResponseError, RedisError
 
-from app.infrastructure.cache_config import redis_cache
-from app.infrastructure.queue_config import broker
+from app.core.infrastructure.cache_config import redis_cache
+from app.core.infrastructure.queue_config import broker
 from app.utils import logger
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI):
+async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     try:
         if not broker.is_worker_process:
             await broker.startup()

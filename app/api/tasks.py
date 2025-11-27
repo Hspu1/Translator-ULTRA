@@ -3,8 +3,8 @@ from sqlalchemy.exc import IntegrityError
 from app import TranslationModel
 from app.api.routs_logic.translator_utils import save_translated
 from app.api.schemas import TranslatedRequest
-from app.infrastructure import async_session_maker
-from app.infrastructure.queue_config import broker
+from app.core.infrastructure import async_session_maker
+from app.core.infrastructure.queue_config import broker
 from app.utils import logger
 
 

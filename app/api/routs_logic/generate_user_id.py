@@ -1,7 +1,7 @@
 from sqlalchemy import insert
 
 from app import UserModel
-from app.infrastructure import async_session_maker
+from app.core.infrastructure import async_session_maker
 
 
 async def generate_user_id_logic() -> dict[str, int]:

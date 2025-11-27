@@ -2,7 +2,7 @@ from sqlalchemy import select
 
 from app import TranslationModel
 from ..schemas import TranslationHistory
-from app.infrastructure import async_session_maker
+from app.core.infrastructure import async_session_maker
 
 
 async def show_history_logic(user_id: int) -> dict[str, list[TranslationHistory]]:
